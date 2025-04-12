@@ -8,7 +8,9 @@ namespace LibraryManagement
 
         public int YearPublished { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } = true;
+
+        public Book () {}
 
         public Book (int id, string title, string author, int yearPublished, bool isAvailable) {
             Id = id;

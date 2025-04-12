@@ -14,7 +14,7 @@ namespace LibraryManagement
                     Title TEXT NOT NULL,
                     Author TEXT NOT NULL,
                     YearPublished INTEGER NOT NULL,
-                    IsAvailable BOOLEAN NOT NULL
+                    IsAvailable BOOLEAN DEFAULT 1 NOT NULL 
                     );
                 ";
                 tableCmd.ExecuteNonQuery();
