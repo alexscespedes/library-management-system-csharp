@@ -4,8 +4,13 @@
     {
         static void Main(string[] args)
         {
-            // string connectionString = "Data Source=library.db";
-            // DatabaseInitializer.Initialize(connectionString);
+            string connectionString = "Data Source=library.db";
+
+            // Initialize DB and table structure
+            DatabaseInitializer.Initialize(connectionString);
+
+            var repository = new LibraryRepository(connectionString);
+            var libraryService = new LibraryService(repository);
 
             while (true)
             {
@@ -34,7 +39,7 @@
             }
         }
 
-        static void AddNewBook() {
+        static void AddNewBook(LibraryService libraryService) {
             
         }
     }

@@ -5,10 +5,10 @@ namespace LibraryManagement
     public class DatabaseInitializer {
         public static void Initialize(string connectionString) {
             using var connection = new SqliteConnection(connectionString);
-                connection.Open();
+            connection.Open();
 
-                var tableCmd = connection.CreateCommand();
-                tableCmd.CommandText = @"
+            var tableCmd = connection.CreateCommand();
+            tableCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Book (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Title TEXT NOT NULL,
@@ -17,10 +17,8 @@ namespace LibraryManagement
                     IsAvailable BOOLEAN DEFAULT 1 NOT NULL 
                     );
                 ";
-                tableCmd.ExecuteNonQuery();
-                
-                Console.WriteLine("Database and Book table created");
-
+            tableCmd.ExecuteNonQuery();
+            Console.WriteLine("Database and Book table created");
         }
     }
 }
