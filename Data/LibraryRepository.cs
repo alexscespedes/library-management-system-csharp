@@ -21,6 +21,33 @@ namespace LibraryManagement
             command.ExecuteNonQuery();
         }
 
+        public List<Book> GetAllBooks() 
+        {
+            var books = new List<Book>();
+
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Books";
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read()) 
+            {
+                var book = new Book 
+                {
+                    Id = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    Author = reader.GetString(2),
+                    YearPublished = reader.GetInt32(3),
+                    IsAvailable = reader.GetInt32(4) == 1
+                };
+
+                books.Add(book);
+            }
+            return books;
+        }
+
         public Book? GetBookById(int id) {
             using var connection = new SqliteConnection(DbConfig.ConnectionString);
             connection.Open();

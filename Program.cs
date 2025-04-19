@@ -27,6 +27,17 @@
                         Console.WriteLine("Add a book");
                         AddNewBook(libraryService);
                         break;
+                    case "2":
+                        Console.Write("View All Books");
+                        break;
+                    case "3":
+                        /*
+                        Console.Write("Get a book by Id: ");
+                        int bookId = int.Parse(Console.ReadLine());
+                        var book = repository.GetBookById(bookId);
+                        Console.WriteLine(book);
+                        */
+                        break;
                     case "7":
                         return;
                     default:

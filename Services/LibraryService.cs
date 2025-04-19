@@ -29,5 +29,24 @@ namespace LibraryManagement
 
             Console.WriteLine($"Book '{book.Title}' by {book.Author} added successfully.");
         }
+
+        public void ViewAllBooks() 
+        {
+            var books = _repository.GetAllBooks();
+
+            if (books.Count == 0)
+            {
+                Console.WriteLine("No books found.");
+                return;
+            }
+
+            Console.WriteLine("\n--- Library Catalog ---");
+            foreach (var book in books)
+            {
+                string status = book.IsAvailable ? "Available" : "Checked Out";
+                Console.WriteLine($"ID: {book.Id} | Title: {book.Title} | Author: {book.Author} | Year: {book.YearPublished} | Status: {status}");
+            }
+            Console.WriteLine();
+        }
     }
 }
