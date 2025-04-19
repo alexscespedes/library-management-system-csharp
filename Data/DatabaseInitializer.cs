@@ -3,20 +3,14 @@ using Microsoft.Data.Sqlite;
 namespace LibraryManagement
 {
     public class DatabaseInitializer {
+        public static void Initialize() 
+        {
+            if (!File.Exists(DbConfig.FullPath))
+            {
+                Console.WriteLine("Creating new library.db...");
+            }
 
-        private static readonly string DatabaseFileName = "library.db";
-        private static readonly string FullPath = Path.Combine(AppContext.BaseDirectory, DatabaseFileName);
-        private static readonly string ConnectionString = $"Data Source={FullPath}";
-        public static void Initialize() {
-
-            // if (!File.Exists(DatabaseFileName))
-            // {
-            //     Console.WriteLine("Creating new library.db...");
-                
-            // }
-            // Console.WriteLine($"Database path: {Path.Combine(AppContext.BaseDirectory, DatabaseFileName)}");
-            
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
             connection.Open();
 
             var tableCmd = connection.CreateCommand();

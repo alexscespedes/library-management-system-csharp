@@ -3,12 +3,8 @@ using Microsoft.Data.Sqlite;
 namespace LibraryManagement
 {
     public class LibraryRepository {
-        private static readonly string DatabaseFileName = "library.db";
-        private static readonly string FullPath = Path.Combine(AppContext.BaseDirectory, DatabaseFileName);
-        private static readonly string ConnectionString = $"Data Source={FullPath}";
-
         public void AddBook(Book book) {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
             connection.Open();
 
             var command = connection.CreateCommand();
@@ -26,7 +22,7 @@ namespace LibraryManagement
         }
 
         public Book? GetBookById(int id) {
-            using var connection = new SqliteConnection(ConnectionString);
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
             connection.Open();
 
             var query = "SELECT * FROM Books WHERE Id = @Id";

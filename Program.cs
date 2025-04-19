@@ -4,13 +4,7 @@
     {
         static void Main(string[] args)
         {
-            // string connectionString = "Data Source=library.db";
-
-            // Initialize DB and table structure
             DatabaseInitializer.Initialize();
-
-            // Console.WriteLine("Database and Book table created");
-
             var repository = new LibraryRepository();
             var libraryService = new LibraryService(repository);
 
@@ -60,7 +54,6 @@
             };   
 
             libraryService.AddBook(newBook);
-
         }
     }
 }
