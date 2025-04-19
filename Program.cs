@@ -14,7 +14,7 @@
 
             while (true)
             {
-                Console.WriteLine("==== Library Management System ====");
+                Console.WriteLine("Welcome to the Library Management System!");
                 Console.WriteLine("1. Add New Book");
                 Console.WriteLine("2. View All Books");
                 Console.WriteLine("3. Search Book by Title/Author");
@@ -28,7 +28,8 @@
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine("Hello case 1");
+                        Console.WriteLine("Add a book");
+                        AddNewBook(libraryService);
                         break;
                     case "7":
                         return;
@@ -39,8 +40,25 @@
             }
         }
 
-        static void AddNewBook(LibraryService libraryService) {
-            
+        static void AddNewBook(LibraryService libraryService) 
+        {
+            Console.Write("Enter book title: ");
+            string title = Console.ReadLine();
+
+            Console.Write("Enter book author: ");
+            string author = Console.ReadLine();
+
+            Console.Write("Enter year published: ");
+            int year = int.Parse(Console.ReadLine());
+
+            var newBook = new Book {
+                Title = title,
+                Author = author,
+                YearPublished = year
+            };   
+
+            libraryService.AddBook(newBook);
+
         }
     }
 }
