@@ -4,12 +4,14 @@
     {
         static void Main(string[] args)
         {
-            string connectionString = "Data Source=library.db";
+            // string connectionString = "Data Source=library.db";
 
             // Initialize DB and table structure
-            DatabaseInitializer.Initialize(connectionString);
+            DatabaseInitializer.Initialize();
 
-            var repository = new LibraryRepository(connectionString);
+            // Console.WriteLine("Database and Book table created");
+
+            var repository = new LibraryRepository();
             var libraryService = new LibraryService(repository);
 
             while (true)

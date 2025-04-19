@@ -3,30 +3,30 @@ using Microsoft.Data.Sqlite;
 namespace LibraryManagement
 {
     public class LibraryRepository {
-        private readonly string _connectionString;
-
-        public LibraryRepository(string dbFile) {
-            _connectionString = $"Data Source={dbFile};";
-        }
+        private static readonly string DatabaseFileName = "library.db";
+        private static readonly string FullPath = Path.Combine(AppContext.BaseDirectory, DatabaseFileName);
+        private static readonly string ConnectionString = $"Data Source={FullPath}";
 
         public void AddBook(Book book) {
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             connection.Open();
 
-            var query = @"INSERT INTO Books (Title, Author, YearPublished, IsAvailable)
-                          VALUES (@Title, @Author, @YearPublished, @IsAvailable)";
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO Books (Title, Author, YearPublished, IsAvailable)
+                VALUES ($title, $author, $year, $available);
+            ";
 
-            using var command = new SqliteCommand(query, connection);
-            command.Parameters.AddWithValue("@Title", book.Title);
-            command.Parameters.AddWithValue("@Author", book.Author);
-            command.Parameters.AddWithValue("@YearPublished", book.YearPublished);
-            command.Parameters.AddWithValue("@IsAvailable", book.IsAvailable);
+            command.Parameters.AddWithValue("$title", book.Title);
+            command.Parameters.AddWithValue("$author", book.Author);
+            command.Parameters.AddWithValue("$year", book.YearPublished);
+            command.Parameters.AddWithValue("$available", book.IsAvailable);
 
             command.ExecuteNonQuery();
         }
 
         public Book? GetBookById(int id) {
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             connection.Open();
 
             var query = "SELECT * FROM Books WHERE Id = @Id";
