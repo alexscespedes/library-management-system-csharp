@@ -67,6 +67,30 @@ namespace LibraryManagement
             Console.WriteLine();
         }
 
+        public void UpdateBook(Book updatedBook) {
+            if (string.IsNullOrWhiteSpace(updatedBook.Title) || string.IsNullOrWhiteSpace(updatedBook.Author))
+            {
+                Console.WriteLine("Error: Title and Author cannot be empty.");
+                return;
+            }
+
+            if (updatedBook.YearPublished <= 0)
+            {
+                Console.WriteLine("Error: Invalid Year Published.");
+                return;
+            }
+
+            bool success =_repository.UpdateBook(updatedBook);
+
+            if (success)
+            {
+                Console.WriteLine($"Book with ID {updatedBook.Id} updated successfully.");
+            }
+            else {
+                Console.WriteLine($"No book found with ID {updatedBook.Id}.");
+            }
+        }
+
         public void DeleteBook(int id) {
             bool success = _repository.DeleteBookById(id);
 
@@ -77,6 +101,12 @@ namespace LibraryManagement
             else {
                 Console.WriteLine($"No book found with ID {id}.");
             }
+        }
+
+        // Helper Method
+
+        public Book? GetBookById(int id) {
+            return _repository.GetBookById(id);
         }
     }
 }

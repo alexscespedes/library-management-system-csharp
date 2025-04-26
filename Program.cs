@@ -34,6 +34,10 @@
                     case "3":
                         SearchBooks(libraryService);
                         break;
+                    case "4":
+                        // Update
+                        UpdateBookInfo(libraryService);
+                        break;
                     case "5":
                         // Delete
                         DeleteBook(libraryService);
@@ -71,6 +75,66 @@
             Console.Write("Enter title or author to seach:");
             string searchTerm = Console.ReadLine();
             libraryService.SearchBooks(searchTerm);
+        }
+
+        static void UpdateBookInfo(LibraryService libraryService) {
+            Console.Write("Enter the ID of the book to update: ");
+            bool validId = int.TryParse(Console.ReadLine(), out int id);
+            if (!validId || id <= 0)
+            {
+                Console.WriteLine("Invalid ID entered.");
+                return;
+            }
+
+            var existingBook = libraryService.GetBookById(id);
+            if (existingBook == null)
+            {
+                Console.WriteLine($"No book found with ID {id}.");
+            }
+
+            Console.WriteLine($"Current Title: {existingBook.Title}");
+            Console.Write("Enter new title (leave blank to keep): ");
+            string newTitle = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(newTitle))
+                newTitle = existingBook.Title;
+            
+            Console.WriteLine($"Current Author: {existingBook.Author}");
+            Console.Write("Enter new author (leave blank to keep): ");
+            string newAuthor = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(newAuthor))
+            {
+                newAuthor = existingBook.Author;
+            }
+
+            Console.WriteLine($"Current Year Published: {existingBook.YearPublished}");
+            Console.Write("Enter new year published (leave blank to keep): ");
+            string yearInput = Console.ReadLine();
+            int newYear;
+            if (string.IsNullOrWhiteSpace(yearInput))
+                newYear = existingBook.YearPublished;
+            else if (!int.TryParse(yearInput, out newYear) || newYear <= 0)
+            {
+                Console.WriteLine("Invalid year entered");
+                return;
+            }
+
+            /* Old version (important to keep)
+            bool validYear = int.TryParse(Console.ReadLine(), out int newYear);
+            if (!validYear || newYear <= 0)
+            {
+                Console.WriteLine("Invalid year entered.");
+                return;
+            }
+            */
+
+            var updatedBook = new Book {
+                Id = id,
+                Title = newTitle,
+                Author = newAuthor,
+                YearPublished = newYear
+            };
+
+            libraryService.UpdateBook(updatedBook);
         }
 
         static void DeleteBook(LibraryService libraryService) {

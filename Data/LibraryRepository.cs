@@ -52,20 +52,19 @@ namespace LibraryManagement
             using var connection = new SqliteConnection(DbConfig.ConnectionString);
             connection.Open();
 
-            var query = "SELECT * FROM Books WHERE Id = @Id";
-            using var command = new SqliteCommand(query, connection);
-            command.Parameters.AddWithValue("@Id", id);
+            var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM Books WHERE Id = $id";
+            command.Parameters.AddWithValue("$id", id);
 
             using var reader = command.ExecuteReader();
             if (reader.Read())
             {
-                return new Book 
-                {
+                return new Book {
                     Id = reader.GetInt32(0),
                     Title = reader.GetString(1),
                     Author = reader.GetString(2),
                     YearPublished = reader.GetInt32(3),
-                    IsAvailable = reader.GetBoolean(4)
+                    IsAvailable = reader.GetInt32(4) == 1
                 };
             }
             return null;
@@ -99,6 +98,29 @@ namespace LibraryManagement
             }
 
             return books;
+        }
+
+        public bool UpdateBook(Book book) {
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE Books
+                SET Title = $title,
+                    Author = $author,
+                    YearPublished = $yearPublished
+                WHERE Id = $id;
+            ";
+
+            command.Parameters.AddWithValue("$title", book.Title);
+            command.Parameters.AddWithValue("$author", book.Author);
+            command.Parameters.AddWithValue("$yearPublished", book.YearPublished);
+            command.Parameters.AddWithValue("$id", book.Id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+
         }
 
         public bool DeleteBookById(int id) {
