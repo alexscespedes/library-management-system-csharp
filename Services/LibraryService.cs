@@ -66,5 +66,17 @@ namespace LibraryManagement
             }
             Console.WriteLine();
         }
+
+        public void DeleteBook(int id) {
+            bool success = _repository.DeleteBookById(id);
+
+            if (success)
+            {
+                Console.WriteLine($"Book with ID {id} deleted successfully.");
+            }
+            else {
+                Console.WriteLine($"No book found with ID {id}.");
+            }
+        }
     }
 }

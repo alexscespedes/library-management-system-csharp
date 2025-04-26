@@ -100,5 +100,17 @@ namespace LibraryManagement
 
             return books;
         }
+
+        public bool DeleteBookById(int id) {
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = "DELETE FROM Books WHERE Id = $id";
+            command.Parameters.AddWithValue("$id", id);
+            
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+        }
     }
 }

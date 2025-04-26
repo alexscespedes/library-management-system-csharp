@@ -34,6 +34,10 @@
                     case "3":
                         SearchBooks(libraryService);
                         break;
+                    case "5":
+                        // Delete
+                        DeleteBook(libraryService);
+                        break;
                     case "7":
                         return;
                     default:
@@ -67,6 +71,18 @@
             Console.Write("Enter title or author to seach:");
             string searchTerm = Console.ReadLine();
             libraryService.SearchBooks(searchTerm);
+        }
+
+        static void DeleteBook(LibraryService libraryService) {
+            Console.Write("Enter the ID of the book to delete: ");
+            bool valid = int.TryParse(Console.ReadLine(), out int id);
+            if (!valid || id <=0)
+            {
+                Console.WriteLine("Invalid ID entered.");
+                return;
+            }
+
+            libraryService.DeleteBook(id);
         }
     }
 }
