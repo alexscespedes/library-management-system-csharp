@@ -48,5 +48,23 @@ namespace LibraryManagement
             }
             Console.WriteLine();
         }
+
+        public void SearchBooks(string searchTerm) {
+            var books = _repository.SearchBooks(searchTerm);
+
+            if (books.Count == 0)
+            {
+                Console.WriteLine($"No books found matching '{searchTerm}");
+                return;
+            }
+
+            Console.WriteLine($"\n-- Search Results for '{searchTerm}' ---");
+            foreach (var book in books)
+            {
+                string status = book.IsAvailable ? "Available" : "Checked Out";
+                Console.WriteLine($"ID: {book.Id} | Title: {book.Title} | Author: {book.Author} | Year: {book.YearPublished} | Status: {status}");
+            }
+            Console.WriteLine();
+        }
     }
 }

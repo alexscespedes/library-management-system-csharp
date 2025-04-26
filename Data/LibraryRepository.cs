@@ -70,5 +70,35 @@ namespace LibraryManagement
             }
             return null;
         }
+
+        public List<Book> SearchBooks (string searchTerm) {
+            var books = new List<Book>();
+
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+            SELECT * FROM Books
+            WHERE Title LIKE $searchTerm OR Author LIKE $searchTerm
+            ";
+
+            command.Parameters.AddWithValue("$searchTerm", $"%{searchTerm}%");
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read()) {
+                var book = new Book {
+                    Id = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    Author = reader.GetString(2),
+                    YearPublished = reader.GetInt32(3),
+                    IsAvailable = reader.GetInt32(4) == 1
+                };
+
+                books.Add(book);
+            }
+
+            return books;
+        }
     }
 }

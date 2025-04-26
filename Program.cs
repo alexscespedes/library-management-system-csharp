@@ -28,15 +28,11 @@
                         AddNewBook(libraryService);
                         break;
                     case "2":
-                        Console.Write("View All Books");
+                        Console.WriteLine("View All Books");
+                        libraryService.ViewAllBooks();
                         break;
                     case "3":
-                        /*
-                        Console.Write("Get a book by Id: ");
-                        int bookId = int.Parse(Console.ReadLine());
-                        var book = repository.GetBookById(bookId);
-                        Console.WriteLine(book);
-                        */
+                        SearchBooks(libraryService);
                         break;
                     case "7":
                         return;
@@ -65,6 +61,12 @@
             };   
 
             libraryService.AddBook(newBook);
+        }
+
+        static void SearchBooks(LibraryService libraryService) {
+            Console.Write("Enter title or author to seach:");
+            string searchTerm = Console.ReadLine();
+            libraryService.SearchBooks(searchTerm);
         }
     }
 }
