@@ -134,5 +134,37 @@ namespace LibraryManagement
             int rowsAffected = command.ExecuteNonQuery();
             return rowsAffected > 0;
         }
+
+        public bool CheckoutBook(int id) {
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+            UPDATE Books
+            SET IsAvailable = 0
+            WHERE Id = $id AND IsAvailable = 1;
+            ";
+            command.Parameters.AddWithValue("$id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+        }
+
+        public bool ReturnBook(int id) {
+            using var connection = new SqliteConnection(DbConfig.ConnectionString);
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+            UPDATE Books
+            SET IsAvailable = 1
+            WHERE Id = $id AND IsAvailable = 0;
+            ";
+            command.Parameters.AddWithValue("$id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+        }
     }
 }
