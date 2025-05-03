@@ -103,6 +103,32 @@ namespace LibraryManagement
             }
         }
 
+        public void CheckoutBook(int id) {
+            bool success = _repository.CheckoutBook(id);
+
+            if (success)
+            {
+                Console.WriteLine($"Book with ID {id} checkout out successfully.");
+            }
+            else 
+            {
+                Console.WriteLine($"Book with ID {id} is not available for checkout or does not exist.");
+            }
+        }
+
+        public void ReturnBook(int id) {
+            bool success = _repository.ReturnBook(id);
+
+            if (success)
+            {
+                Console.WriteLine($"Book with ID {id} returned successfully.");
+            }
+            else 
+            {
+                Console.WriteLine($"Book with ID {id} is not available for checked out or does not exist.");
+            }
+        }
+
         // Helper Method
 
         public Book? GetBookById(int id) {

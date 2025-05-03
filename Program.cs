@@ -16,10 +16,11 @@
                 Console.WriteLine("3. Search Book by Title/Author");
                 Console.WriteLine("4. Update Book Details");
                 Console.WriteLine("5. Delete Book");
-                Console.WriteLine("6. Mark as Borrowed/Returned");
-                Console.WriteLine("7. Exit");
+                Console.WriteLine("6. Mark as Borrowed");
+                Console.WriteLine("7. Mark as Returned");
+                Console.WriteLine("8. Exit");
                 Console.Write("Choose an option: ");
-                string choice = Console.ReadLine();
+                string choice = Console.ReadLine()!;
 
                 switch (choice)
                 {
@@ -42,7 +43,14 @@
                         // Delete
                         DeleteBook(libraryService);
                         break;
+                    case "6":
+                        CheckoutBook(libraryService);
+                        break;
                     case "7":
+                        // Update
+                        ReturnBook(libraryService);
+                        break;
+                    case "8":
                         return;
                     default:
                         Console.WriteLine("Option not implemented yet.");
@@ -54,13 +62,13 @@
         static void AddNewBook(LibraryService libraryService) 
         {
             Console.Write("Enter book title: ");
-            string title = Console.ReadLine();
+            string title = Console.ReadLine()!;
 
             Console.Write("Enter book author: ");
-            string author = Console.ReadLine();
+            string author = Console.ReadLine()!;
 
             Console.Write("Enter year published: ");
-            int year = int.Parse(Console.ReadLine());
+            int year = int.Parse(Console.ReadLine()!);
 
             var newBook = new Book {
                 Title = title,
@@ -73,13 +81,13 @@
 
         static void SearchBooks(LibraryService libraryService) {
             Console.Write("Enter title or author to seach:");
-            string searchTerm = Console.ReadLine();
+            string searchTerm = Console.ReadLine()!;
             libraryService.SearchBooks(searchTerm);
         }
 
         static void UpdateBookInfo(LibraryService libraryService) {
             Console.Write("Enter the ID of the book to update: ");
-            bool validId = int.TryParse(Console.ReadLine(), out int id);
+            bool validId = int.TryParse(Console.ReadLine()!, out int id);
             if (!validId || id <= 0)
             {
                 Console.WriteLine("Invalid ID entered.");
@@ -94,13 +102,13 @@
 
             Console.WriteLine($"Current Title: {existingBook.Title}");
             Console.Write("Enter new title (leave blank to keep): ");
-            string newTitle = Console.ReadLine();
+            string newTitle = Console.ReadLine()!;
             if (string.IsNullOrWhiteSpace(newTitle))
                 newTitle = existingBook.Title;
             
             Console.WriteLine($"Current Author: {existingBook.Author}");
             Console.Write("Enter new author (leave blank to keep): ");
-            string newAuthor = Console.ReadLine();
+            string newAuthor = Console.ReadLine()!;
             if (string.IsNullOrWhiteSpace(newAuthor))
             {
                 newAuthor = existingBook.Author;
@@ -108,7 +116,7 @@
 
             Console.WriteLine($"Current Year Published: {existingBook.YearPublished}");
             Console.Write("Enter new year published (leave blank to keep): ");
-            string yearInput = Console.ReadLine();
+            string yearInput = Console.ReadLine()!;
             int newYear;
             if (string.IsNullOrWhiteSpace(yearInput))
                 newYear = existingBook.YearPublished;
@@ -119,7 +127,7 @@
             }
 
             /* Old version (important to keep)
-            bool validYear = int.TryParse(Console.ReadLine(), out int newYear);
+            bool validYear = int.TryParse(Console.ReadLine()!, out int newYear);
             if (!validYear || newYear <= 0)
             {
                 Console.WriteLine("Invalid year entered.");
@@ -139,7 +147,7 @@
 
         static void DeleteBook(LibraryService libraryService) {
             Console.Write("Enter the ID of the book to delete: ");
-            bool valid = int.TryParse(Console.ReadLine(), out int id);
+            bool valid = int.TryParse(Console.ReadLine()!, out int id);
             if (!valid || id <=0)
             {
                 Console.WriteLine("Invalid ID entered.");
@@ -147,6 +155,30 @@
             }
 
             libraryService.DeleteBook(id);
+        }
+
+        static void CheckoutBook(LibraryService libraryService) {
+            Console.Write("Enter the ID of the book to checkout: ");
+            bool valid = int.TryParse(Console.ReadLine(), out int id);
+            if (!valid || id <=0)
+            {
+                Console.WriteLine("Invalid ID entered.");
+                return;
+            }
+
+            libraryService.CheckoutBook(id);
+        }
+
+        static void ReturnBook(LibraryService libraryService) {
+            Console.Write("Enter the ID of the book to return: ");
+            bool valid = int.TryParse(Console.ReadLine(), out int id);
+            if (!valid || id <=0)
+            {
+                Console.WriteLine("Invalid ID entered.");
+                return;
+            }
+
+            libraryService.ReturnBook(id);
         }
     }
 }
